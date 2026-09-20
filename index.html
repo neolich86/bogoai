@@ -232,8 +232,48 @@
     position:relative;border-radius:20px;overflow:hidden;background:var(--white);
     box-shadow:0 1px 0 #eceff5 inset; border:1px solid #eceff5;
     transition:transform .5s var(--ease), box-shadow .5s var(--ease);
+    cursor:pointer;
   }
   .card:hover{transform:translateY(-8px);box-shadow:var(--shadow);}
+  .card .expand-hint{
+    position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;
+    background:rgba(6,10,18,.45);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;
+    z-index:2;opacity:0;transform:scale(.7);transition:opacity .35s var(--ease), transform .35s var(--ease);
+  }
+  .card:hover .expand-hint{opacity:1;transform:scale(1);}
+  .card .expand-hint svg{width:15px;height:15px;stroke:#fff;}
+
+  /* ---------- lightbox ---------- */
+  .lightbox{
+    position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;
+    padding:5vh 5vw; background:rgba(6,10,18,.72); backdrop-filter:blur(8px);
+    opacity:0;visibility:hidden;transition:opacity .4s var(--ease), visibility .4s var(--ease);
+  }
+  .lightbox.open{opacity:1;visibility:visible;}
+  .lightbox-panel{
+    background:var(--white);border-radius:24px;max-width:920px;width:100%;max-height:90vh;overflow-y:auto;
+    padding:40px;position:relative;
+    transform:translateY(24px) scale(.97);transition:transform .45s var(--ease);
+  }
+  .lightbox.open .lightbox-panel{transform:translateY(0) scale(1);}
+  .lightbox-close{
+    position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;
+    border:1px solid #e7e9f0;background:var(--paper);display:flex;align-items:center;justify-content:center;
+    cursor:pointer;transition:all .3s var(--ease); z-index:3;
+  }
+  .lightbox-close:hover{background:var(--navy);border-color:var(--navy);}
+  .lightbox-close:hover svg{stroke:#fff;}
+  .lightbox-close svg{width:16px;height:16px;stroke:var(--navy);transition:stroke .3s;}
+  .lightbox-title{font-size:24px;font-weight:700;color:var(--navy);padding-right:40px;}
+  .lightbox-sub{font-size:14px;color:var(--muted);margin-top:8px;margin-bottom:28px;}
+  .lightbox-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;}
+  .lightbox-grid figure{margin:0;border-radius:14px;overflow:hidden;background:var(--paper);border:1px solid #eceff5;}
+  .lightbox-grid img{width:100%;height:auto;display:block;}
+  .lightbox-grid figcaption{padding:12px 16px;font-size:13px;color:#5b6478;}
+  @media (max-width:600px){
+    .lightbox-panel{padding:26px 20px;}
+    .lightbox-title{font-size:19px;}
+  }
   .card .thumb{height:220px;position:relative;overflow:hidden;background:linear-gradient(135deg,#101a2e,#1c2c4a);}
   .card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease);}
   .card:hover .thumb img{transform:scale(1.08);}
@@ -347,13 +387,16 @@
   <div class="orb orb1"></div>
   <div class="orb orb2"></div>
   <div class="hero-inner">
-    <div class="eyebrow" id="heroEyebrow">● KOREA EXCLUSIVE DISTRIBUTOR</div>
-    <h1 id="heroTitle">산업 소재의 신뢰, <br><em>보고어드밴스트산업</em>이 잇습니다</h1>
-    <p class="lead" id="heroLead">일본 후지 단자(Fuji Terminal Industry), 기록 소재 종합 연구소, 중국 센츄럴 트렌드(주)의 한국 총 대리점으로서 니켈단자·온도휴즈·실리콘·세라믹 파이버 등 산업 핵심 소재를 공급합니다.</p>
+    <div class="eyebrow" id="heroEyebrow">● OUR SERVICES</div>
+    <h1 id="heroTitle">일본 Fuji Terminal Industry의<br><em>한국 총 대리점</em>입니다</h1>
+    <p class="lead" id="heroLead">후지 단자 공업(주)의 니켈단자 및 슬리브, 온도휴즈 및 유리관휴즈를 취급하고, 일본 (주)기록소재 종합연구소(온도변화용 안료)의 한국 총대리이며, 중국 (주)베이징 신더(액체·초산 실리콘), (주)티엔허다(팽창 그라파이트), 지우치앙(주)(바이오세라믹 화이버 페이퍼 및 블랭킷), UBU 진공장비(주)(진공 박막 증착기)를 취급하고 있습니다. 고객님께 최상의 품질과 서비스를 제공하기 위해 항상 노력하며, 필요한 제품 문의는 언제든지 환영합니다.</p>
     <div class="badge-row" id="heroBadges">
       <span class="badge">Fuji Terminal Industry 한국 총대리</span>
       <span class="badge">기록소재 종합연구소 한국 총대리</span>
-      <span class="badge">센츄럴 트렌드(주) 한국 총대리</span>
+      <span class="badge">베이징 신더 한국 총대리</span>
+      <span class="badge">티엔허다 한국 총대리</span>
+      <span class="badge">지우치앙 한국 총대리</span>
+      <span class="badge">UBU 진공장비 한국 총대리</span>
     </div>
     <div class="hero-actions">
       <a href="#products" class="btn btn-primary">취급 제품 보기 →</a>
@@ -368,10 +411,10 @@
     <div class="reveal">
       <span class="tag">COMPANY</span>
       <h2 class="sec-title">일본·중국 산업 소재 브랜드를<br>한국에 총괄 공급합니다</h2>
-      <p class="sec-sub">보고어드밴스트산업은 일본 Fuji Terminal Industry CO.,LTD의 한국 총 대리로서 니켈단자, 슬리브, 온도휴즈, 유리관휴즈 등을 취급하며, 일본 기록소재 종합연구소의 온도변화용 안료, 중국의 액체·초산 실리콘, 팽창그라파이트, 바이오세라믹 화이버 페이퍼, UBU 진공 박막 증착기까지 산업 현장에 필요한 핵심 소재를 안정적으로 공급합니다.</p>
+      <p class="sec-sub">보고어드밴스트산업은 일본 Fuji Terminal Industry CO.,LTD(후지 단자 공업(주))의 한국 총 대리로서 니켈단자, 슬리브, 온도휴즈, 유리관휴즈를 취급하고, 일본 (주)기록소재 종합연구소(온도변화용 안료)의 한국 총대리이며, 중국 (주)베이징 신더(액체·초산 실리콘), (주)티엔허다(팽창 그라파이트), 지우치앙(주)(바이오세라믹 화이버 페이퍼 및 블랭킷), UBU 진공장비(주)(진공 박막 증착기)를 취급하고 있습니다. 고객님께 최상의 품질과 서비스를 제공하기 위해 항상 노력하고 있습니다.</p>
 
       <div class="stats reveal-stagger">
-        <div class="stat"><div class="num" data-count="3">0<span>+</span></div><div class="label">해외 총대리 파트너</div></div>
+        <div class="stat"><div class="num" data-count="6">0<span>+</span></div><div class="label">해외 총대리 파트너</div></div>
         <div class="stat"><div class="num" data-count="11">0<span>+</span></div><div class="label">취급 제품군</div></div>
         <div class="stat"><div class="num" data-count="2">0<span>개국</span></div><div class="label">협력 제조국 (일본·중국)</div></div>
       </div>
@@ -382,8 +425,11 @@
       <h2 class="sec-title" style="font-size:clamp(22px,2.6vw,30px)">공식 총대리 파트너십</h2>
       <ul class="partner-list">
         <li><span class="idx">01</span><span class="name">Fuji Terminal Industry CO., LTD (일본)</span><span class="role">한국 총대리</span></li>
-        <li><span class="idx">02</span><span class="name">기록 소재 종합 연구소 (일본)</span><span class="role">한국 총대리</span></li>
-        <li><span class="idx">03</span><span class="name">센츄럴 트렌드(주) (중국)</span><span class="role">한국 총대리</span></li>
+        <li><span class="idx">02</span><span class="name">(주)기록소재 종합연구소 (일본)</span><span class="role">한국 총대리</span></li>
+        <li><span class="idx">03</span><span class="name">(주)베이징 신더 (중국)</span><span class="role">한국 총대리</span></li>
+        <li><span class="idx">04</span><span class="name">(주)티엔허다 (중국)</span><span class="role">한국 총대리</span></li>
+        <li><span class="idx">05</span><span class="name">지우치앙(주) (중국)</span><span class="role">한국 총대리</span></li>
+        <li><span class="idx">06</span><span class="name">UBU 진공장비(주) (중국)</span><span class="role">한국 총대리</span></li>
       </ul>
     </div>
   </div>
@@ -395,57 +441,57 @@
   <p class="sec-sub">전선·단자 부품부터 내열·절연 소재까지, 산업 현장에 필요한 11가지 핵심 제품군을 공급합니다.</p>
 
   <div class="product-grid reveal-stagger" id="productGrid">
-    <div class="card">
+    <div class="card" data-gallery="nickel">
       <span class="num-tag">01</span>
       <div class="thumb"><img loading="lazy" src="images/nickel_terminal.jpg" alt="니켈단자"></div>
       <div class="body"><h3>니켈단자</h3><p>Fuji Terminal Industry 정품 니켈단자 시리즈 (NHR형)</p></div>
     </div>
-    <div class="card">
+    <div class="card" data-gallery="sleeve">
       <span class="num-tag">02</span>
       <div class="thumb"><img loading="lazy" src="images/sleeve.jpg" alt="슬리브"></div>
       <div class="body"><h3>슬리브</h3><p>내열·내식성 니켈 슬리브 (NHB형), 직선 돌기맞춤용</p></div>
     </div>
-    <div class="card">
+    <div class="card" data-gallery="fuse">
       <span class="num-tag">03</span>
       <div class="thumb"><img loading="lazy" src="images/thermal_fuse.jpg" alt="온도휴즈"></div>
       <div class="body"><h3>온도휴즈</h3><p>FTF 시리즈 유리관휴즈 포함 온도 안전 소자</p></div>
     </div>
-    <div class="card">
+    <div class="card" data-gallery="connector">
       <span class="num-tag">04</span>
       <div class="thumb"><img loading="lazy" src="images/connector.jpg" alt="전선차입용 콘넥터"></div>
       <div class="body"><h3>전선차입용 콘넥터</h3><p>VF 커넥터 PC35X 시리즈, 2~8홀 전선 접속용</p></div>
     </div>
-    <div class="card">
+    <div class="card" data-gallery="graphite">
       <span class="num-tag">05</span>
       <div class="thumb"><img loading="lazy" src="images/expanded_graphite.jpg" alt="팽창그라파이트"></div>
       <div class="body"><h3>팽창그라파이트</h3><p>내열·차열 산업용 팽창 그라파이트 세라믹 페이퍼</p></div>
     </div>
-    <div class="card">
+    <div class="card" data-gallery="pigment">
       <span class="num-tag">06</span>
       <div class="thumb"><img loading="lazy" src="images/thermal_pigment.jpg" alt="온도변화용 안료"></div>
       <div class="body"><h3>온도변화용 안료</h3><p>기록소재 종합연구소의 감온 변색 안료 (서멀컬러)</p></div>
     </div>
-    <div class="card">
+    <div class="card" data-gallery="ceramic">
       <span class="num-tag">07</span>
       <div class="thumb"><img loading="lazy" src="images/ceramic_fiber.jpg" alt="세라믹 페이퍼 파이버"></div>
       <div class="body"><h3>세라믹 페이퍼 파이버</h3><p>바이오세라믹 화이버 페이퍼 단열재</p></div>
     </div>
-    <div class="card">
+    <div class="card" data-gallery="silicone">
       <span class="num-tag">08</span>
       <div class="thumb"><img loading="lazy" src="images/liquid_silicone.jpg" alt="액체실리콘"></div>
       <div class="body"><h3>액체실리콘</h3><p>액체·초산 실리콘 산업용 소재 (XD-TB 시리즈)</p></div>
     </div>
-    <div class="card">
+    <div class="card" data-gallery="vacuum">
       <span class="num-tag">09</span>
       <div class="thumb"><img loading="lazy" src="images/vacuum_deposition.jpg" alt="진공박막증착기"></div>
       <div class="body"><h3>진공박막증착기</h3><p>UBU 진공 박막 증착기 설비</p></div>
     </div>
-    <div class="card">
+    <div class="card" data-gallery="electrode">
       <span class="num-tag">10</span>
       <div class="thumb"><img loading="lazy" src="images/electrode_rod.jpg" alt="전극 봉"></div>
       <div class="body"><h3>전극 봉</h3><p>산업용 전극봉 생산 및 정밀 가공</p></div>
     </div>
-    <div class="card">
+    <div class="card" data-gallery="stripper">
       <span class="num-tag">11</span>
       <div class="thumb"><img loading="lazy" src="images/cable_stripper.jpg" alt="케이블 탈피 공구"></div>
       <div class="body"><h3>케이블 탈피 공구</h3><p>고압 CV 케이블 외층피복·반도전층·절연체 탈피용 첨단 공구</p></div>
@@ -460,7 +506,10 @@
   <div class="client-row reveal-stagger">
     <div class="client-card"><img loading="lazy" src="https://static.wixstatic.com/media/bd56a6_db1728caa9c0494d874abe8409136e14~mv2.png/v1/fill/w_560,h_97,al_c,q_90/bd56a6_db1728caa9c0494d874abe8409136e14~mv2.png" alt="Fuji Terminal Industry"></div>
     <div class="client-card"><img loading="lazy" src="https://static.wixstatic.com/media/bd56a6_62d61c43a8134fef912e0deaaad3cc89~mv2.png/v1/fill/w_541,h_83,al_c,q_90/bd56a6_62d61c43a8134fef912e0deaaad3cc89~mv2.png" alt="기록소재 종합연구소"></div>
-    <div class="client-card text-only">센츄럴 트렌드(주)</div>
+    <div class="client-card text-only">베이징 신더</div>
+    <div class="client-card text-only">티엔허다</div>
+    <div class="client-card text-only">지우치앙</div>
+    <div class="client-card text-only">UBU 진공장비</div>
   </div>
 </section>
 
@@ -500,6 +549,15 @@
     </form>
   </div>
 </section>
+
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-panel">
+    <div class="lightbox-close" id="lightboxClose"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+    <div class="lightbox-title" id="lightboxTitle"></div>
+    <div class="lightbox-sub" id="lightboxSub"></div>
+    <div class="lightbox-grid" id="lightboxGrid"></div>
+  </div>
+</div>
 
 <footer>
   <div class="footer-top">
@@ -615,6 +673,133 @@
     });
   }, {threshold:0.6});
   counters.forEach(c=>counterIo.observe(c));
+
+  // product gallery lightbox
+  const GALLERY = {
+    nickel: {
+      title: '니켈단자',
+      sub: 'Fuji Terminal Industry 정품 니켈단자 시리즈 (NHR형) — 耐熱性・耐食性에 優れた 니켈 조로 제작되는 압착단자로, 電熱線 등의 접속에 적합합니다.',
+      images: [
+        {src:'images/nickel_terminal.jpg', caption:'니켈단자 실물 사진'},
+        {src:'images/nickel_terminal_spec.jpg', caption:'제품 치수 도면 (NHR형)'}
+      ]
+    },
+    sleeve: {
+      title: '슬리브',
+      sub: '내열·내식성 니켈 슬리브 (NHB형), 직선 돌기맞춤용 — 전선 접속부의 내열·내식성을 요구하는 현장에 적합합니다.',
+      images: [
+        {src:'images/sleeve.jpg', caption:'니켈 슬리브 실물 사진'},
+        {src:'images/sleeve_spec.jpg', caption:'제품 치수 도면 (NHB형)'}
+      ]
+    },
+    fuse: {
+      title: '온도휴즈',
+      sub: 'FTF 시리즈 유리관휴즈 포함 온도 안전 소자 — 다양한 동작 온도(70~229℃)와 정격전류에 맞춘 라인업을 보유하고 있습니다.',
+      images: [
+        {src:'images/thermal_fuse.jpg', caption:'FTF 시리즈 실물 라인업'},
+        {src:'images/thermal_fuse_spec1.jpg', caption:'FTF-1 / FTF-2 시리즈 제품표'},
+        {src:'images/thermal_fuse_spec2.jpg', caption:'FTF-S 15A 시리즈 제품표'}
+      ]
+    },
+    connector: {
+      title: '전선차입용 콘넥터',
+      sub: 'VF 커넥터 PC35X 시리즈, 2~8홀 전선 접속용 — 난연성 플라스틱 V-0 등급을 적용해 높은 안전성을 확보했습니다.',
+      images: [
+        {src:'images/connector.jpg', caption:'PC35X 시리즈 2~8홀 실물'},
+        {src:'images/connector_features.jpg', caption:'설치 방법 및 제품 특장점'}
+      ]
+    },
+    graphite: {
+      title: '팽창그라파이트',
+      sub: '내열·차열 산업용 팽창 그라파이트 세라믹 페이퍼 — 최대 1260℃까지 사용 가능하며 밀봉·단열 성능이 우수합니다.',
+      images: [
+        {src:'images/expanded_graphite.jpg', caption:'팽창그라파이트 세라믹 페이퍼 시트'},
+        {src:'images/graphite_spec.jpg', caption:'제품 사양 및 기술 데이터'},
+        {src:'images/graphite_cup.jpg', caption:'팽창률(密度) 측정 테스트'}
+      ]
+    },
+    pigment: {
+      title: '온도변화용 안료',
+      sub: '(주)기록소재 종합연구소의 감온 변색 안료 (서멀컬러) — 설정 온도에 따라 발색/소색이 반복되는 시온 안료입니다.',
+      images: [
+        {src:'images/thermal_pigment.jpg', caption:'서멀컬러 색상 라인업'},
+        {src:'images/pigment_usage.jpg', caption:'온도별 발색·소색 활용 예시'},
+        {src:'images/pigment_sunny.jpg', caption:'UV 감응 포토크로믹 사니컬러'}
+      ]
+    },
+    ceramic: {
+      title: '세라믹 페이퍼 파이버',
+      sub: '바이오세라믹 화이버 페이퍼 단열재 — 최대 1450℃까지 대응하는 고순도 세라믹 파이버로 건축·유리 산업에 폭넓게 사용됩니다.',
+      images: [
+        {src:'images/ceramic_fiber.jpg', caption:'세라믹 파이버 페이퍼 롤 제품'},
+        {src:'images/ceramic_spec.jpg', caption:'등급별 기술 데이터'}
+      ]
+    },
+    silicone: {
+      title: '액체실리콘',
+      sub: '액체·초산 실리콘 산업용 소재 — 몰드, 실링, 코팅 등 다양한 산업 현장에 적용되는 (주)베이징 신더의 실리콘 제품군입니다.',
+      images: [
+        {src:'images/liquid_silicone.jpg', caption:'XD-TB 시리즈 실리콘'},
+        {src:'images/silicone_alt.jpg', caption:'XD-E82 시리즈 활용 예시'},
+        {src:'images/silicone_sealant.jpg', caption:'범용 실리콘 실란트(NP)'}
+      ]
+    },
+    vacuum: {
+      title: '진공박막증착기',
+      sub: 'UBU 진공 박막 증착기 설비 — 대형 산업용 PVD 코팅 설비로, 정밀 박막 증착 공정에 사용됩니다.',
+      images: [
+        {src:'images/vacuum_deposition.jpg', caption:'UBU 진공 박막 증착기 설비 전경'}
+      ]
+    },
+    electrode: {
+      title: '전극 봉',
+      sub: '산업용 전극봉 생산 및 정밀 가공 — 대형 선반 설비를 이용한 정밀 가공 공정을 거쳐 제작됩니다.',
+      images: [
+        {src:'images/electrode_rod.jpg', caption:'전극봉 정밀 가공 현장'}
+      ]
+    },
+    stripper: {
+      title: '케이블 탈피 공구',
+      sub: '고압 CV 케이블의 외층피복·반도전층·절연체를 하나의 공구로 벗겨낼 수 있는 첨단 공구입니다. 칼날 노출이 없어 안전하고, 균일하고 안정된 마무리가 가능합니다.',
+      images: [
+        {src:'images/cable_stripper.jpg', caption:'케이블 탈피 공구 실물'},
+        {src:'images/cable_stripper_hand.jpg', caption:'케이블 피복 탈피 작업 모습'},
+        {src:'images/cable_stripper_steps.jpg', caption:'①~④ 4단계 탈피 과정'}
+      ]
+    }
+  };
+
+  const lightbox = document.getElementById('lightbox');
+  const lightboxTitle = document.getElementById('lightboxTitle');
+  const lightboxSub = document.getElementById('lightboxSub');
+  const lightboxGrid = document.getElementById('lightboxGrid');
+  const lightboxClose = document.getElementById('lightboxClose');
+
+  function openLightbox(key){
+    const data = GALLERY[key];
+    if(!data) return;
+    lightboxTitle.textContent = data.title;
+    lightboxSub.textContent = data.sub;
+    lightboxGrid.innerHTML = data.images.map(img =>
+      `<figure><img loading="lazy" src="${img.src}" alt="${data.title}"><figcaption>${img.caption}</figcaption></figure>`
+    ).join('');
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.card[data-gallery]').forEach(card=>{
+    const hint = document.createElement('div');
+    hint.className = 'expand-hint';
+    hint.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M21 16v5h-5M8 21H3v-5"/></svg>';
+    card.appendChild(hint);
+    card.addEventListener('click', ()=> openLightbox(card.dataset.gallery));
+  });
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeLightbox(); });
 
   // hero entrance
   window.addEventListener('DOMContentLoaded', ()=>{
